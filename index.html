@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CoCoA Lab Activities</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F4EF;
+    --card:#FBFCFA;
+    --ink:#1B2A29;
+    --pine:#2C5F5A;
+    --pine-deep:#204643;
+    --gold:#C8912F;
+    --gold-soft:#F5EAD1;
+    --slate:#647671;
+    --line:#D6DDD5;
+    --line-soft:#E4E9E2;
+    --shadow:0 1px 2px rgba(27,42,41,.05),0 8px 24px rgba(27,42,41,.06);
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans);
+    color:var(--ink);
+    background-color:var(--paper);
+    background-image:radial-gradient(var(--line-soft) 1px, transparent 1px);
+    background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:44px 20px calc(48px + env(safe-area-inset-bottom));
+  }
+  /* masthead */
+  .eyebrow{
+    font-family:var(--mono);font-size:12.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:14px;
+  }
+  h1{font-size:34px;line-height:1.1;margin:0 0 12px;letter-spacing:-.02em}
+  .sub{color:var(--slate);font-size:16px;margin:0;max-width:44ch}
+  .divider{display:flex;align-items:center;gap:14px;margin:30px 0 22px}
+  .divider::before,.divider::after{content:"";height:1px;background:var(--line);flex:1}
+  .divider span{font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate)}
+
+  /* activity list */
+  .list{display:flex;flex-direction:column;gap:14px}
+  a.act{
+    display:flex;align-items:flex-start;gap:16px;text-decoration:none;color:inherit;
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:20px 18px;box-shadow:var(--shadow);
+    transition:transform .1s ease,border-color .15s ease,box-shadow .15s ease;
+  }
+  a.act:hover{border-color:var(--pine);box-shadow:0 2px 4px rgba(27,42,41,.06),0 14px 30px rgba(27,42,41,.09)}
+  a.act:active{transform:translateY(1px)}
+  .idx{
+    font-family:var(--mono);font-size:13px;font-weight:600;color:var(--gold);
+    background:var(--gold-soft);border-radius:9px;padding:6px 9px;line-height:1;margin-top:2px;
+    flex:0 0 auto;
+  }
+  .act-body{flex:1;min-width:0}
+  .act-title{font-size:18.5px;font-weight:600;letter-spacing:-.01em;margin:0 0 4px}
+  .act-desc{color:var(--slate);font-size:14.5px;margin:0}
+  .act-tag{
+    display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--pine);background:#fff;border:1px solid var(--line);
+    border-radius:99px;padding:3px 9px;margin-top:10px;
+  }
+  .arrow{
+    flex:0 0 auto;align-self:center;color:var(--slate);font-size:20px;
+    transition:transform .15s ease,color .15s ease;
+  }
+  a.act:hover .arrow{color:var(--pine);transform:translateX(3px)}
+
+  footer{margin-top:36px;color:var(--slate);font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">CoCoA Lab</div>
+  <h1>Lab Activities</h1>
+  <p class="sub">A small home for our retreat and team activities. Pick one to begin — each runs right in your browser, on a phone or laptop.</p>
+
+  <div class="divider"><span>Activities</span></div>
+
+  <div class="list">
+
+    <!-- ACTIVITY: Values Reflection -->
+    <a class="act" href="values-reflection.html">
+      <span class="idx">01</span>
+      <span class="act-body">
+        <p class="act-title">Individual Values Reflection</p>
+        <p class="act-desc">Find your two core values, then set goals for the year ahead. About 10 minutes, done solo before we share in the room.</p>
+        <span class="act-tag">Retreat · solo</span>
+      </span>
+      <span class="arrow">→</span>
+    </a>
+
+    <!-- To add another activity later, copy the block above,
+         change the href, number, title, description, and tag. -->
+
+  </div>
+
+  <footer>CoCoA Lab · 2026</footer>
+</div>
+</body>
+</html>
