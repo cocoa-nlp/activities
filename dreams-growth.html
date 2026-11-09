@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CoCoA Lab · Dreams &amp; Growth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F4EF;--card:#FBFCFA;--ink:#1B2A29;--pine:#2C5F5A;--pine-deep:#204643;
+    --gold:#C8912F;--gold-soft:#F5EAD1;--slate:#647671;--line:#D6DDD5;--line-soft:#E4E9E2;
+    --shadow:0 1px 2px rgba(27,42,41,.05),0 8px 24px rgba(27,42,41,.06);
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:var(--sans);color:var(--ink);background-color:var(--paper);
+    background-image:radial-gradient(var(--line-soft) 1px, transparent 1px);background-size:22px 22px;
+    -webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh;
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:20px 18px calc(96px + env(safe-area-inset-bottom))}
+  .top{display:flex;align-items:center;gap:10px;padding:8px 2px 16px}
+  .dots{display:flex;gap:6px;flex:1}
+  .dot{height:4px;flex:1;border-radius:99px;background:var(--line);transition:background .3s}
+  .dot.on{background:var(--pine)}
+  .dot.done{background:var(--gold)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);white-space:nowrap}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 20px;box-shadow:var(--shadow)}
+  h1{font-size:25px;line-height:1.2;margin:0 0 10px;letter-spacing:-.01em}
+  h2{font-size:21px;line-height:1.25;margin:0 0 6px;letter-spacing:-.01em}
+  .lede{color:var(--slate);font-size:15.5px;margin:0 0 4px}
+  .step-label{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:10px}
+  p.hint{color:var(--slate);font-size:14px;margin:8px 0 0}
+  .meta{display:flex;gap:14px;margin:18px 0 4px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px;color:var(--slate)}
+  .meta b{color:var(--pine);font-weight:600}
+  .rule{height:1px;background:var(--line-soft);margin:18px 0}
+  ol.how{margin:6px 0 0;padding-left:20px;color:var(--ink);font-size:15px}
+  ol.how li{margin:7px 0}
+  .note{background:var(--gold-soft);border-radius:10px;padding:11px 13px;font-size:13.5px;color:#6b5417;margin-top:16px}
+  .counter{font-family:var(--mono);font-size:13px;color:var(--slate);display:flex;justify-content:space-between;align-items:baseline;margin:2px 0 12px}
+  .counter b{color:var(--pine);font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--sans);font-size:14.5px;font-weight:500;padding:9px 13px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;user-select:none;transition:transform .08s,background .15s,border-color .15s,color .15s;min-height:40px}
+  .chip:active{transform:scale(.96)}
+  .chip.sel{background:var(--pine);border-color:var(--pine);color:#fff}
+  .chip.dim{opacity:.4}
+  .opts{display:flex;flex-direction:column;gap:10px}
+  .opt{display:flex;gap:12px;align-items:flex-start;padding:13px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;cursor:pointer;user-select:none;transition:border-color .15s,background .15s,opacity .15s}
+  .opt:active{transform:scale(.995)}
+  .opt.sel{border-color:var(--pine);background:#EEF4F1}
+  .opt.dim{opacity:.45}
+  .opt .box{flex:0 0 auto;width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);margin-top:1px;position:relative;transition:background .15s,border-color .15s}
+  .opt.sel .box{background:var(--pine);border-color:var(--pine)}
+  .opt.sel .box::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;transform:rotate(45deg)}
+  .opt-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+  .opt-title{font-size:15px;font-weight:600;color:var(--ink)}
+  .opt-desc{font-size:13px;color:var(--slate);line-height:1.35}
+  .addrow{display:flex;gap:8px;margin-top:14px}
+  input[type=text],textarea{width:100%;font-family:var(--sans);font-size:16px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 12px;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(44,95,90,.14)}
+  textarea{min-height:120px;line-height:1.45}
+  textarea.short{min-height:84px}
+  .btn-add{flex:0 0 auto;padding:0 16px;border-radius:10px;border:1px solid var(--pine);background:#fff;color:var(--pine);font-family:var(--sans);font-weight:600;font-size:15px;cursor:pointer}
+  label.q{display:block;font-size:14.5px;font-weight:600;margin:16px 0 7px}
+  label.q:first-child{margin-top:0}
+  .nav{position:fixed;left:0;right:0;bottom:0;background:linear-gradient(to top,var(--paper) 68%,rgba(241,244,239,0));padding:14px 18px calc(14px + env(safe-area-inset-bottom))}
+  .nav-inner{max-width:560px;margin:0 auto;display:flex;gap:10px}
+  .btn{font-family:var(--sans);font-size:16px;font-weight:600;border-radius:12px;padding:14px 18px;cursor:pointer;border:1px solid transparent;transition:transform .08s,opacity .15s;min-height:50px}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{flex:1;background:var(--pine);color:#fff}
+  .btn-primary:disabled{opacity:.4;cursor:not-allowed}
+  .btn-ghost{background:#fff;color:var(--pine);border-color:var(--line)}
+  .sum-item{padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .sum-item:last-child{border-bottom:none}
+  .sum-k{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin-bottom:4px}
+  .sum-v{font-size:15.5px;white-space:pre-wrap}
+  .sum-v em{color:var(--slate);font-style:normal}
+  .pill{display:inline-block;background:var(--gold-soft);color:#6b5417;font-family:var(--mono);font-size:13px;font-weight:600;padding:4px 11px;border-radius:99px;margin:0 6px 6px 0}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:96px;background:var(--ink);color:#fff;font-size:14px;padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;z-index:20}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="dots" id="dots"></div>
+    <div class="eyebrow" id="stepcount"></div>
+  </div>
+  <div id="view"></div>
+</div>
+
+<div class="nav" id="nav" style="display:none">
+  <div class="nav-inner">
+    <button class="btn btn-ghost" id="back" style="display:none">Back</button>
+    <button class="btn btn-primary" id="next">Next</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+const STEPS = ["intro","dreams","grow","support","sessions","summary"];
+let step = 0;
+
+const state = { dreams:"", grow:"", support:[], sessions:[] };
+
+const SUPPORT = [
+  "Feedback on my writing","Framing research questions","Career & next-step advice",
+  "Coding & tooling help","Stats & methods help","Giving talks / presenting",
+  "Networking & intros","Keeping up with the field","Time & project management",
+  "Navigating academia","More regular 1:1s","Scoping a project of my own"
+];
+const SESSIONS = [
+  {name:"Mock review clinic", desc:"We review a real paper together as if we're the program committee — and learn to review well."},
+  {name:"Whiteboard jam", desc:"Someone brings a stuck problem and the whole group works it out on the board."},
+  {name:"Skill swap / tutorial", desc:"One person teaches the group something practical — a tool, method, or workflow."},
+  {name:"Failure autopsy", desc:"Someone walks us through a direction that didn't work, and what they took from it."},
+  {name:"Reverse AMA (ask Steve anything)", desc:"Ask me anything about academia, careers, or how the field actually works."},
+  {name:"Demystify academia", desc:"How peer review, grants, CVs, or job talks really work — pulled apart together."},
+  {name:"“How I got here” stories", desc:"One person shares the winding path that led them into this work."},
+  {name:"Figure & table clinic", desc:"We redesign a plot or table from someone's project for clarity."},
+  {name:"Wins & gratitude round", desc:"A quick round naming what went well lately."}
+];
+const CAP = 3;
+
+const view=document.getElementById("view"),dots=document.getElementById("dots"),
+  stepcount=document.getElementById("stepcount"),nav=document.getElementById("nav"),
+  backBtn=document.getElementById("back"),nextBtn=document.getElementById("next"),
+  toast=document.getElementById("toast");
+
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function render(){
+  dots.innerHTML = STEPS.map((_,i)=>`<span class="dot ${i<step?'done':''} ${i===step?'on':''}"></span>`).join("");
+  stepcount.textContent = `${step+1} / ${STEPS.length}`;
+  const name = STEPS[step];
+  nav.style.display = name==="intro" ? "none" : "block";
+  backBtn.style.display = (step>0 && name!=="intro") ? "block" : "none";
+  ({intro:rIntro,dreams:rDreams,grow:rGrow,support:rSupport,sessions:rSessions,summary:rSummary}[name])();
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* INTRO */
+function rIntro(){
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">CoCoA Lab</div>
+    <h1>Dreams &amp; Growth</h1>
+    <p class="lede">A short look ahead — where you want to go, and how the lab can help you get there. Do it on your own; at the end you'll get a summary to share when we talk.</p>
+    <div class="meta"><span><b>~8 min</b> solo</span><span><b>Private</b> on your phone</span><span><b>Copy</b> at the end</span></div>
+    <div class="rule"></div>
+    <div class="step-label" style="color:var(--pine)">What you'll do</div>
+    <ol class="how">
+      <li>Picture your <b>dreams</b> — where you'd love to end up.</li>
+      <li>Name what you most want to <b>grow</b> this year.</li>
+      <li>Tap the <b>support</b> and <b>sessions</b> that would help most.</li>
+    </ol>
+    <div class="note">Only on this screen — nothing is sent anywhere, and it clears if you refresh. You keep it by copying at the end.</div>
+    <button class="btn btn-primary" style="width:100%;margin-top:20px" onclick="go(1)">Start</button>
+  </div>`;
+}
+
+/* DREAMS */
+function rDreams(){
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">Step 1 · Dreams</div>
+    <h2>Picture yourself at the peak.</h2>
+    <p class="hint">If things go really well, where do you end up — in work and life? Jot a few. <b>Don't filter for what's realistic</b>, and big or small both count. Saying dreams out loud is hard; this is just for you.</p>
+    <textarea oninput="state.dreams=this.value" placeholder="e.g. run my own lab · work in industry research · teach · a job with time for family · publish something I'm proud of · move back home…">${esc(state.dreams)}</textarea>
+  </div>`;
+  nextBtn.textContent="Next"; nextBtn.disabled=false; nextBtn.onclick=()=>go(2); backBtn.onclick=()=>go(0);
+}
+
+/* GROW */
+function rGrow(){
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">Step 2 · Growth edge</div>
+    <h2>One step toward that, this year.</h2>
+    <p class="hint">Thinking about those dreams — what do you most want to get better at over the next year? One or two things is plenty.</p>
+    <textarea class="short" oninput="state.grow=this.value" placeholder="e.g. writing papers faster · speaking up in talks · designing my own study · a specific method or tool…">${esc(state.grow)}</textarea>
+  </div>`;
+  nextBtn.textContent="Next"; nextBtn.disabled=false; nextBtn.onclick=()=>go(3); backBtn.onclick=()=>go(1);
+}
+
+/* SUPPORT (pick up to 3) */
+function rSupport(){
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">Step 3 · What would help</div>
+    <h2>What kind of support would help you grow fastest?</h2>
+    <p class="hint">Tap your top few — this tells me where to put mentoring energy.</p>
+    <div class="counter"><span>Pick up to ${CAP}</span><b><span id="scount">${state.support.length}</span>/${CAP}</b></div>
+    <div class="chips" id="schips"></div>
+    <div class="addrow">
+      <input type="text" id="sadd" placeholder="Add your own…" autocomplete="off"
+        onkeydown="if(event.key==='Enter'){addCustom('support','sadd');event.preventDefault();}">
+      <button class="btn-add" onclick="addCustom('support','sadd')">Add</button>
+    </div>
+  </div>`;
+  paintPick("support",SUPPORT,"schips","scount");
+  nextBtn.textContent="Next"; nextBtn.disabled=false; nextBtn.onclick=()=>go(4); backBtn.onclick=()=>go(2);
+}
+
+/* SESSIONS (pick up to 3) */
+function rSessions(){
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">Step 4 · Future sessions</div>
+    <h2>Which monthly sessions would you most want?</h2>
+    <p class="hint">We've got one in-person slot a month for things like this. Tap the ones you'd actually look forward to.</p>
+    <div class="counter"><span>Pick up to ${CAP}</span><b><span id="ecount">${state.sessions.length}</span>/${CAP}</b></div>
+    <div class="opts" id="echips"></div>
+    <div class="addrow">
+      <input type="text" id="eadd" placeholder="Add your own idea…" autocomplete="off"
+        onkeydown="if(event.key==='Enter'){addCustom('sessions','eadd');event.preventDefault();}">
+      <button class="btn-add" onclick="addCustom('sessions','eadd')">Add</button>
+    </div>
+  </div>`;
+  paintSessions();
+  nextBtn.textContent="See my summary"; nextBtn.disabled=false; nextBtn.onclick=()=>go(5); backBtn.onclick=()=>go(3);
+}
+
+function paintPick(key,base,chipsId,countId){
+  const chosen=state[key];
+  const all=[...base];
+  chosen.forEach(v=>{ if(!all.includes(v)) all.push(v); });
+  const atMax=chosen.length>=CAP;
+  document.getElementById(chipsId).innerHTML = all.map(v=>{
+    const sel=chosen.includes(v);
+    const cls=sel?"sel":(atMax?"dim":"");
+    return `<span class="chip ${cls}" onclick="togglePick('${key}','${v.replace(/'/g,"\\'")}')">${esc(v)}</span>`;
+  }).join("");
+  document.getElementById(countId).textContent=chosen.length;
+}
+function paintSessions(){
+  const chosen=state.sessions;
+  const baseNames=SESSIONS.map(s=>s.name);
+  const rows=SESSIONS.slice();
+  chosen.forEach(v=>{ if(!baseNames.includes(v)) rows.push({name:v,desc:""}); });
+  const atMax=chosen.length>=CAP;
+  document.getElementById("echips").innerHTML = rows.map(o=>{
+    const sel=chosen.includes(o.name);
+    const cls=sel?"sel":(atMax?"dim":"");
+    const desc=o.desc?`<span class="opt-desc">${esc(o.desc)}</span>`:"";
+    return `<div class="opt ${cls}" onclick="togglePick('sessions','${o.name.replace(/'/g,"\\'")}')">
+      <span class="box" aria-hidden="true"></span>
+      <span class="opt-body"><span class="opt-title">${esc(o.name)}</span>${desc}</span>
+    </div>`;
+  }).join("");
+  document.getElementById("ecount").textContent=chosen.length;
+}
+function togglePick(key,v){
+  const arr=state[key]; const i=arr.indexOf(v);
+  if(i>=0) arr.splice(i,1); else if(arr.length<CAP) arr.push(v);
+  if(key==="support") paintPick("support",SUPPORT,"schips","scount");
+  else paintSessions();
+}
+function addCustom(key,inputId){
+  const el=document.getElementById(inputId); const v=el.value.trim();
+  if(v && state[key].length<CAP && !state[key].includes(v)) state[key].push(v);
+  el.value="";
+  if(key==="support") paintPick("support",SUPPORT,"schips","scount");
+  else paintSessions();
+}
+
+/* SUMMARY */
+function rSummary(){
+  const sup = state.support.map(s=>`<span class="pill">${esc(s)}</span>`).join("") || '<em>—</em>';
+  const ses = state.sessions.map(s=>`<span class="pill">${esc(s)}</span>`).join("") || '<em>—</em>';
+  view.innerHTML = `
+  <div class="card">
+    <div class="step-label">Yours to keep</div>
+    <h2>Here's your reflection.</h2>
+    <p class="hint">Tap the “Copy my answers” button below, then paste it into our lab chat — or just read from it when we talk.</p>
+    <div class="sum-item"><div class="sum-k">My dreams</div><div class="sum-v">${esc(state.dreams)||'<em>—</em>'}</div></div>
+    <div class="sum-item"><div class="sum-k">What I want to grow this year</div><div class="sum-v">${esc(state.grow)||'<em>—</em>'}</div></div>
+    <div class="sum-item"><div class="sum-k">Support that would help</div><div class="sum-v">${sup}</div></div>
+    <div class="sum-item"><div class="sum-k">Sessions I'd most want</div><div class="sum-v">${ses}</div></div>
+  </div>`;
+  nextBtn.textContent="Copy my answers"; nextBtn.disabled=false; nextBtn.onclick=copyAll; backBtn.onclick=()=>go(4);
+}
+
+function plainText(){
+  const L=[];
+  L.push("DREAMS & GROWTH — CoCoA LAB");
+  L.push("");
+  L.push("My dreams: "+(state.dreams||"—"));
+  L.push("");
+  L.push("What I want to grow this year: "+(state.grow||"—"));
+  L.push("");
+  L.push("Support that would help: "+(state.support.join("  •  ")||"—"));
+  L.push("Sessions I'd most want: "+(state.sessions.join("  •  ")||"—"));
+  return L.join("\n");
+}
+function copyAll(){
+  const text=plainText(), done=()=>showToast();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else fallbackCopy(text,done);
+}
+function fallbackCopy(text,cb){
+  const ta=document.createElement("textarea");
+  ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+  document.body.appendChild(ta); ta.focus(); ta.select();
+  try{document.execCommand("copy");}catch(e){}
+  document.body.removeChild(ta); cb&&cb();
+}
+let toastT;
+function showToast(){ toast.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>toast.classList.remove("show"),1800); }
+
+function go(i){ step=i; render(); }
+render();
+</script>
+</body>
+</html>
