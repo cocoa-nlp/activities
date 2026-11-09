@@ -151,7 +151,7 @@ function rIntro(){
   <div class="card">
     <div class="step-label">CoCoA Lab</div>
     <h1>Dreams &amp; Growth</h1>
-    <p class="lede">A short look ahead — where you want to go, and how the lab can help you get there. Do it on your own; at the end you'll get a summary to share when we talk.</p>
+    <p class="lede">A short look ahead — where you want to go, and how the lab can help you get there. Do it on your own; your dreams stay yours, and at the end you'll share just the part about how the lab can support you.</p>
     <div class="meta"><span><b>~8 min</b> solo</span><span><b>Private</b> on your phone</span><span><b>Copy</b> at the end</span></div>
     <div class="rule"></div>
     <div class="step-label" style="color:var(--pine)">What you'll do</div>
@@ -171,7 +171,7 @@ function rDreams(){
   <div class="card">
     <div class="step-label">Step 1 · Dreams</div>
     <h2>Picture yourself at the peak.</h2>
-    <p class="hint">If things go really well, where do you end up — in work and life? Jot a few. <b>Don't filter for what's realistic</b>, and big or small both count. Saying dreams out loud is hard; this is just for you.</p>
+    <p class="hint">If things go really well, where do you end up — in work and life? Jot a few. <b>Don't filter for what's realistic</b>, and big or small both count. Saying dreams out loud is hard, so this part stays yours — you won't be asked to put it in the lab chat.</p>
     <textarea oninput="state.dreams=this.value" placeholder="e.g. run my own lab · work in industry research · teach · a job with time for family · publish something I'm proud of · move back home…">${esc(state.dreams)}</textarea>
   </div>`;
   nextBtn.textContent="Next"; nextBtn.disabled=false; nextBtn.onclick=()=>go(2); backBtn.onclick=()=>go(0);
@@ -276,24 +276,24 @@ function rSummary(){
   const ses = state.sessions.map(s=>`<span class="pill">${esc(s)}</span>`).join("") || '<em>—</em>';
   view.innerHTML = `
   <div class="card">
-    <div class="step-label">Yours to keep</div>
+    <div class="step-label">Last step</div>
     <h2>Here's your reflection.</h2>
-    <p class="hint">Tap the “Copy my answers” button below, then paste it into our lab chat — or just read from it when we talk.</p>
+    <p class="hint">Your dreams and growth notes stay with you — you won't be asked to put them in the chat. Tap the “Copy the part to share” button below to copy just your support and session picks, then paste that into our lab chat.</p>
+
+    <div class="step-label" style="color:var(--pine);margin-top:4px">Yours to keep</div>
     <div class="sum-item"><div class="sum-k">My dreams</div><div class="sum-v">${esc(state.dreams)||'<em>—</em>'}</div></div>
     <div class="sum-item"><div class="sum-k">What I want to grow this year</div><div class="sum-v">${esc(state.grow)||'<em>—</em>'}</div></div>
+
+    <div class="step-label" style="color:var(--pine);margin-top:18px">To share with the lab</div>
     <div class="sum-item"><div class="sum-k">Support that would help</div><div class="sum-v">${sup}</div></div>
     <div class="sum-item"><div class="sum-k">Sessions I'd most want</div><div class="sum-v">${ses}</div></div>
   </div>`;
-  nextBtn.textContent="Copy my answers"; nextBtn.disabled=false; nextBtn.onclick=copyAll; backBtn.onclick=()=>go(4);
+  nextBtn.textContent="Copy the part to share"; nextBtn.disabled=false; nextBtn.onclick=copyAll; backBtn.onclick=()=>go(4);
 }
 
 function plainText(){
   const L=[];
-  L.push("DREAMS & GROWTH — CoCoA LAB");
-  L.push("");
-  L.push("My dreams: "+(state.dreams||"—"));
-  L.push("");
-  L.push("What I want to grow this year: "+(state.grow||"—"));
+  L.push("CoCoA LAB — HOW THE LAB CAN SUPPORT ME");
   L.push("");
   L.push("Support that would help: "+(state.support.join("  •  ")||"—"));
   L.push("Sessions I'd most want: "+(state.sessions.join("  •  ")||"—"));
